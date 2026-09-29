@@ -18,7 +18,6 @@ class CuckooFilter:
         max_kicks: Maximum eviction attempts.
         """
 
-        # Capacity must be a positive power of two.
         if capacity < 2 or capacity & (capacity - 1):
             raise ValueError(
                 "Capacity must be a power of two >= 2"
@@ -35,7 +34,6 @@ class CuckooFilter:
         self.fingerprint_bits = fingerprint_bits
         self.max_kicks = max_kicks
 
-        # Create empty buckets.
         self.buckets = [
             [] for _ in range(capacity)
         ]
@@ -60,7 +58,6 @@ class CuckooFilter:
         """
         Calculate two candidate buckets.
         """
-        # First bucket: hash the original username.
         data = username.encode("utf-8")
 
         hash_value = hashlib.blake2b(
@@ -71,16 +68,13 @@ class CuckooFilter:
 
         i1 = int.from_bytes(hash_value, "big") % self.capacity
 
-        # Calculate an offset using the fingerprint.
         i2 = self._alternate_index(i1, fingerprint)
         return i1, i2
 
     
     def contains(self, username):
-        # Generate the fingerprint.
         fingerprint = self._fingerprint(username)
 
-        # Get two candidate buckets.
         i1, i2 = self._get_indices(
             username, fingerprint
         )
@@ -115,14 +109,11 @@ class CuckooFilter:
         fingerprint = self._fingerprint(username)
         i1, i2 = self._get_indices(username, fingerprint)
 
-        # Step 1: If the first bucket has space,
-        # insert the fingerprint.
         if len(self.buckets[i1]) < self.bucket_size:
             self.buckets[i1].append(fingerprint)
             self.size += 1
             return True
 
-        # Step 2: Otherwise, try the second bucket.
         if len(self.buckets[i2]) < self.bucket_size:
             self.buckets[i2].append(fingerprint)
             self.size += 1
@@ -133,44 +124,26 @@ class CuckooFilter:
             bucket.copy()
             for bucket in self.buckets
         ]
-
-        # Randomly choose the first bucket.
         current_index = random.choice([i1, i2])
-
-        # The fingerprint waiting to be inserted.
         current_fp = fingerprint
 
-        # TODO:
-        # Repeat up to self.max_kicks times.
-        # 1. Select a random slot.
-        # 2. Swap current_fp with the stored fingerprint.
-        # 3. Calculate the evicted fingerprint's
-        #    alternative bucket.
-        # 4. Insert it if there is space.
         for _ in range(self.max_kicks):
-            # Step 1: Select a random slot.
             slot_index = random.randint(
                 0, self.bucket_size - 1
             )
-
-            # Step 2: Swap current_fp with the stored fingerprint.
             evicted_fp = self.buckets[current_index][slot_index]
             self.buckets[current_index][slot_index] = current_fp
 
-            # Step 3: Calculate the evicted fingerprint's alternative bucket.
             alt_index = self._alternate_index(current_index, evicted_fp)
 
-            # Step 4: Insert it if there is space.
             if len(self.buckets[alt_index]) < self.bucket_size:
                 self.buckets[alt_index].append(evicted_fp)
                 self.size += 1
                 return True
-
-            # Prepare for the next iteration.
+            
             current_fp = evicted_fp
             current_index = alt_index
 
-        # If all attempts fail, restore old_buckets.
         self.buckets = old_buckets
 
         return False
@@ -233,8 +206,6 @@ if __name__ == "__main__":
         else:
             failed.append(username)
 
-        # Every previously successful insertion
-        # must remain searchable.
         for name in successful:
             assert cf.contains(name), (
                 f"Lost username: {name}"

@@ -3,7 +3,6 @@ class BloomFilter:
     def __init__(self, m=10007, k=7):
         """
         Initialize a Bloom Filter.
-
         m: Number of bits.
         k: Number of hash functions.
         """
@@ -42,8 +41,6 @@ class BloomFilter:
         positions = self._hashes(username)
 
         for position in positions:
-            # TODO:
-            # Set the corresponding bit to 1.
             self.bits[position] = 1
 
 
@@ -51,20 +48,14 @@ class BloomFilter:
         positions = self._hashes(username)
 
         for position in positions:
-            # TODO:
-            # If any corresponding bit is 0,
-            # return False.
             if self.bits[position] == 0:
                 return False
-
-        # TODO:
-        # Otherwise, return True.
         return True
 
 if __name__ == "__main__":
     from pathlib import Path
 
-    # Load the 1,000 usernames generated previously.
+    # Load the 1,000 usernames generated previously
     data_path = (
         Path(__file__).resolve().parent.parent
         / "data"
@@ -91,7 +82,7 @@ if __name__ == "__main__":
 
     assert false_negatives == 0
 
-    # Test B: Query usernames that were never inserted.
+    # Test B: Query usernames that were never inserted
     negative_usernames = [
         f"other{i:08d}" for i in range(1000)
     ]

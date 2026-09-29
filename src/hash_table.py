@@ -44,7 +44,6 @@ class HashTable:
         """
         Check whether a username exists in the hash table.
         """
-
         index = self._hash(username)
         bucket = self.buckets[index]
 
@@ -85,14 +84,9 @@ if __name__ == "__main__":
             f"Capacity: {table.capacity}"
         )
 
-    # Check that all usernames are still accessible.
     for username in usernames:
         assert table.contains(username)
-
-    # Check an absent username.
     assert not table.contains("zoe")
-
-    # Check duplicate insertion.
     old_size = table.size
     table.insert("alice")
     assert table.size == old_size

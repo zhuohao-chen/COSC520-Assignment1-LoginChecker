@@ -1,15 +1,4 @@
 def binary_search(usernames, target):
-    """
-    Check whether target exists in a sorted list using binary search.
-
-    Input:
-        usernames: A sorted list of username strings.
-        target: The username to search for.
-
-    Output:
-        True if target exists, otherwise False.
-    """
-
     low = 0
     high = len(usernames) - 1
 
