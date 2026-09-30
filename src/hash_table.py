@@ -1,30 +1,24 @@
-"""
-Initialize the hash table.
-Input: capacity (initial number of buckets).
-Output: None.
-"""
+
 
 class HashTable:
     def __init__(self, capacity=10):
         """
         Initialize the hash table.
-        Input:
-            capacity: Number of buckets in the hash table.
+        Input: capacity (initial number of buckets).
+        Output: None.
         """
         self.capacity = capacity
         self.buckets = [[] for _ in range(capacity)]
         self.size = 0
         self.max_load_factor = 0.75
 
-    """
-    Calculate a bucket index using polynomial hashing.
-    Input: username (string).
-    Output: Bucket index (integer).
-    """
+
 
     def _hash(self, username):
         """
-        Convert a username into a bucket index.
+        Calculate a bucket index using polynomial hashing.
+        Input: username (string).
+        Output: Bucket index (integer).
         """
 
         hash_value = 0
@@ -38,15 +32,13 @@ class HashTable:
 
         return hash_value % self.capacity
 
-    """
-    Insert a username if it does not already exist.
-    Input: username (string).
-    Output: None.
-    """
+
 
     def insert(self, username):
         """
-        Insert a username into the hash table.
+        Insert a username if it does not already exist.
+        Input: username (string).
+        Output: None.
         """
         index = self._hash(username)
         bucket = self.buckets[index]
@@ -59,15 +51,13 @@ class HashTable:
         if self.size / self.capacity > self.max_load_factor:
             self._resize()
 
-    """
-    Check whether a username exists in the hash table.
-    Input: username (string).
-    Output: True if found, otherwise False.
-    """
+
 
     def contains(self, username):
         """
         Check whether a username exists in the hash table.
+        Input: username (string).
+        Output: True if found, otherwise False.
         """
         index = self._hash(username)
         bucket = self.buckets[index]
@@ -77,13 +67,14 @@ class HashTable:
                 return True
         return False
 
-    """
-    Double the capacity and rehash existing usernames.
-    Input: None.
-    Output: None.
-    """
+
 
     def _resize(self):
+        """
+        Double the capacity and rehash existing usernames.
+        Input: None.
+        Output: None.
+        """
         old_buckets = self.buckets
         self.capacity *= 2
         self.buckets = [[] for _ in range(self.capacity)]

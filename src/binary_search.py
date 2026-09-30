@@ -1,10 +1,11 @@
-"""
-Search for a username using binary search.
-Input: usernames (sorted list), target (string).
-Output: True if found, otherwise False.
-"""
+
 
 def binary_search(usernames, target):
+    """
+    Search for a username using binary search.
+    Input: usernames (sorted list), target (string).
+    Output: True if found, otherwise False.
+    """
     low = 0
     high = len(usernames) - 1
 

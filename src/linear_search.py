@@ -1,10 +1,11 @@
 
-"""
-Search for a username by checking each element.
-Input: usernames (list), target (string).
-Output: True if found, otherwise False.
-"""
+
 def linear_search(usernames, target):
+    """
+    Search for a username by checking each element.
+    Input: usernames (list), target (string).
+    Output: True if found, otherwise False.
+    """
     for i in usernames:
         if i == target:
             return True
