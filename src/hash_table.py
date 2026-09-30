@@ -1,3 +1,9 @@
+"""
+Initialize the hash table.
+Input: capacity (initial number of buckets).
+Output: None.
+"""
+
 class HashTable:
     def __init__(self, capacity=10):
         """
@@ -10,6 +16,12 @@ class HashTable:
         self.size = 0
         self.max_load_factor = 0.75
 
+    """
+    Calculate a bucket index using polynomial hashing.
+    Input: username (string).
+    Output: Bucket index (integer).
+    """
+
     def _hash(self, username):
         """
         Convert a username into a bucket index.
@@ -21,9 +33,16 @@ class HashTable:
             # 每轮循环中，hash_value 乘以 31这个质数，然后加上当前字符的 ASCII 值，
             # 这样可以避免abc和cba出现在一个桶中会出现很多collision，乘以个质数可以显著减少这样的情况，
             # 31是一个常用的质数，能够在一定程度上减少哈希冲突，这样子字符位置也会影响在哈希表的位置
+            # Multiply by 31 to make character order affect the hash value.
             hash_value = hash_value*31 + ord(char)
 
         return hash_value % self.capacity
+
+    """
+    Insert a username if it does not already exist.
+    Input: username (string).
+    Output: None.
+    """
 
     def insert(self, username):
         """
@@ -40,6 +59,12 @@ class HashTable:
         if self.size / self.capacity > self.max_load_factor:
             self._resize()
 
+    """
+    Check whether a username exists in the hash table.
+    Input: username (string).
+    Output: True if found, otherwise False.
+    """
+
     def contains(self, username):
         """
         Check whether a username exists in the hash table.
@@ -51,6 +76,12 @@ class HashTable:
             if user == username:
                 return True
         return False
+
+    """
+    Double the capacity and rehash existing usernames.
+    Input: None.
+    Output: None.
+    """
 
     def _resize(self):
         old_buckets = self.buckets

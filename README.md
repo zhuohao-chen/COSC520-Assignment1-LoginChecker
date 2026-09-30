@@ -76,3 +76,23 @@ Runtime measurements may vary depending on the computer and execution environmen
 Linear Search, Binary Search, and the Hash Table perform exact membership checks.
 
 Bloom Filters and Cuckoo Filters perform approximate membership checks and may produce false positives. Consequently, they cannot independently guarantee username uniqueness.
+
+## Large-scale Evaluation
+
+The additional benchmark evaluates 100,000, 1,000,000, and 10,000,000 usernames using 1,000 positive and 1,000 negative queries per method.
+
+Run each dataset size separately from the project root:
+
+```bash
+python benchmark/benchmark_large.py --sizes 100000
+python benchmark/benchmark_large.py --sizes 1000000
+python benchmark/benchmark_large.py --sizes 10000000
+```
+
+The large-scale experiment uses a separate Cuckoo Filter implementation with optimized rollback. Its results are saved to `results/benchmark_large_raw.csv` and `results/benchmark_large_summary.csv`.
+
+To regenerate the large-scale comparison figure, install Matplotlib and run:
+
+```bash
+python plot_large_lookup.py
+```

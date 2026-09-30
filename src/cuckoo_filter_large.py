@@ -1,5 +1,4 @@
 """Cuckoo filter variant with an O(max_kicks) rollback log.
-
 For large-scale experiments only. The original implementation in
 src/cuckoo_filter.py remains unchanged, preserving earlier benchmark results.
 """
@@ -9,8 +8,11 @@ from cuckoo_filter import CuckooFilter
 
 
 class LargeCuckooFilter(CuckooFilter):
-    """Use transaction-log rollback instead of copying every bucket."""
-
+    """
+    Insert a fingerprint using transaction-log rollback.
+    Input: username (string).
+    Output: True if inserted, otherwise False.
+    """
     def insert(self, username):
         """Insert a username; return False and restore all changes on failure."""
         fingerprint = self._fingerprint(username)

@@ -1,6 +1,12 @@
 import hashlib
 import random
 
+"""
+Initialize the Cuckoo filter.
+Input: capacity, bucket_size, fingerprint_bits, max_kicks.
+Output: None.
+"""
+
 class CuckooFilter:
     def __init__(
         self,
@@ -40,6 +46,12 @@ class CuckooFilter:
 
         self.size = 0
 
+    """
+    Generate a nonzero fingerprint from a username.
+    Input: username (string).
+    Output: Fingerprint (integer).
+    """
+
     def _fingerprint(self, username):
         data = username.encode("utf-8")
 
@@ -53,7 +65,12 @@ class CuckooFilter:
         return number % (
             2 ** self.fingerprint_bits - 1
         ) + 1
-    
+
+    """
+    Calculate the two candidate bucket indices.
+    Input: username (string), fingerprint (integer).
+    Output: Two bucket indices (tuple).
+    """
     def _get_indices(self, username, fingerprint):
         """
         Calculate two candidate buckets.
@@ -71,6 +88,11 @@ class CuckooFilter:
         i2 = self._alternate_index(i1, fingerprint)
         return i1, i2
 
+    """
+    Check both candidate buckets for a fingerprint.
+    Input: username (string).
+    Output: True if possibly present, otherwise False.
+    """
     
     def contains(self, username):
         fingerprint = self._fingerprint(username)
@@ -83,6 +105,12 @@ class CuckooFilter:
             return True
 
         return False
+
+    """
+    Calculate the alternative bucket using XOR.
+    Input: index (integer), fingerprint (integer).
+    Output: Alternative bucket index (integer).
+    """
 
     def _alternate_index(self, index, fingerprint):
         """
@@ -104,6 +132,12 @@ class CuckooFilter:
         ) | 1
 
         return index ^ offset
+
+    """
+    Insert a fingerprint with eviction and rollback.
+    Input: username (string).
+    Output: True if inserted, otherwise False.
+    """
 
     def insert(self, username):
         fingerprint = self._fingerprint(username)

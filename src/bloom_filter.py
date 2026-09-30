@@ -1,5 +1,11 @@
 
 class BloomFilter:
+
+    """
+    Initialize the Bloom filter.
+    Input: m (array size), k (number of hash positions).
+    Output: None.
+    """
     def __init__(self, m=10007, k=7):
         """
         Initialize a Bloom Filter.
@@ -13,6 +19,12 @@ class BloomFilter:
         self.k = k
         self.bits = [0] * m
 
+
+    """
+    Generate hash positions using double hashing.
+    Input: username (string).
+    Output: List of k bit positions.
+    """
 
     def _hashes(self, username):
         """
@@ -36,14 +48,22 @@ class BloomFilter:
 
         return positions
 
-
+    """
+    Insert a username by setting its hash positions.
+    Input: username (string).
+    Output: None.
+    """
     def add(self, username):
         positions = self._hashes(username)
 
         for position in positions:
             self.bits[position] = 1
 
-
+    """
+    Perform an approximate membership check.
+    Input: username (string).
+    Output: False if absent, otherwise possibly True.
+    """
     def contains(self, username):
         positions = self._hashes(username)
 
